@@ -24,7 +24,9 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-07-15',
   nitro: {
-    static: true,
+    prerender: {
+      routes: ['/'],
+    },
   },
   vite: {
     plugins: [

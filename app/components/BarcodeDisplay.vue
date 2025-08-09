@@ -5,20 +5,20 @@ const props = defineProps<{
   value: string;
 }>();
 
-const canvas = useTemplateRef('canvas');
+const barcodeDisplay = useTemplateRef('barcode-display');
 
 onMounted(() => {
   watchEffect(() => {
-    JSBarcode(canvas.value, props.value);
+    JSBarcode(barcodeDisplay.value, props.value);
   });
 });
 </script>
 
 <template>
-  <canvas
-    ref="canvas"
+  <svg
+    ref="barcode-display"
     class="mx-auto"
-  />
+  >{{ '' }}</svg>
 </template>
 
 <style scoped>

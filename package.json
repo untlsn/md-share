@@ -7,17 +7,27 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.10",
     "@nuxt/eslint": "1.8.0",
     "@nuxt/fonts": "0.11.4",
     "@nuxt/icon": "1.15.0",
     "@nuxt/image": "1.11.0",
+    "@orpc/client": "^1.7.11",
+    "@orpc/server": "^1.7.11",
+    "@orpc/tanstack-query": "^1.7.11",
     "@tailwindcss/vite": "^4.1.11",
+    "@tanstack/vue-query": "^5.83.1",
+    "@types/node": "^24.2.1",
     "@vueuse/core": "^13.6.0",
+    "arktype": "^2.1.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
     "eslint": "^9.33.0",
     "jsbarcode": "^3.12.1",
     "lucide-vue-next": "^0.539.0",
@@ -31,6 +41,8 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   }
 }

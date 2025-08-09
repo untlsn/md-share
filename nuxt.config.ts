@@ -16,7 +16,16 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/main.css'],
+  runtimeConfig: {
+    turso: {
+      databaseUrl: '',
+      authToken: '',
+    },
+  },
   compatibilityDate: '2025-07-15',
+  nitro: {
+    static: true,
+  },
   vite: {
     plugins: [
       tailwindcss(),

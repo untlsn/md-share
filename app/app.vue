@@ -1,19 +1,27 @@
 <script setup lang="ts">
-const message = ref('');
+import { useMutation, useQuery } from '@tanstack/vue-query';
 
-const loadTextFile = async (ev: Event) => {
-  const target = ev.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) return;
+const orpc = useOrpc();
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    message.value = e.target?.result as string;
-  };
-  reader.readAsText(file);
-};
+const { query } = useRoute();
 
-const showBarcode = ref(false);
+const { data: textData } = useQuery(
+  orpc.getText.queryOptions({
+    input: parseInt(query.q as string, 36),
+  }),
+);
+
+const { mutate, data: newId } = useMutation(
+  orpc.sendText.mutationOptions(),
+);
+
+const barcode = computed(() => {
+  const id = textData.value?.id || newId.value;
+
+  if (!id) return undefined;
+
+  return id.toString(36);
+});
 </script>
 
 <template>
@@ -21,31 +29,15 @@ const showBarcode = ref(false);
     <h1 class="m-6 text-2xl">
       MD Share
     </h1>
-    <UiCard class="m-4">
-      <UiCardContent>
-        <UiLabel
-          class="mb-2"
-          for="message"
-        >
-          Kontent
-        </UiLabel>
-        <UiTextarea v-model="message" />
-        <div class="flex justify-between mt-4">
-          <UiButton
-            variant="secondary"
-            @click="showBarcode = true"
-          >
-            Wygeneruj link
-          </UiButton>
-          <ButtonedFileInput @change="loadTextFile" />
-        </div>
-      </UiCardContent>
-    </UiCard>
+    <MessageEditor
+      :model-value="textData?.text"
+      @submit="mutate"
+    />
     <UiCard
-      v-if="showBarcode"
+      v-if="barcode"
       class="m-4"
     >
-      <BarcodeDisplay value="Barcode" />
+      <BarcodeDisplay :value="barcode" />
     </UiCard>
   </div>
 </template>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import JSBarcode from 'jsbarcode';
-
 const message = ref('');
 
 const loadTextFile = async (ev: Event) => {
@@ -16,8 +14,6 @@ const loadTextFile = async (ev: Event) => {
 };
 
 const showBarcode = ref(false);
-
-
 </script>
 
 <template>

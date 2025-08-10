@@ -6,6 +6,7 @@ const orpc = useOrpc();
 
 const route = useRoute();
 
+
 const { data: textData } = useQuery(computed(() => {
   return orpc.getText.queryOptions({
     input: parseInt(route.query.q as string, 36),
@@ -29,13 +30,7 @@ const fullURL = computed(() => {
 });
 
 const tab = useLocalStorage('tab', 'barcode-id');
-useQrReaderDetector((codeOrUrl) => {
-  const q = codeOrUrl.includes('q=') ? codeOrUrl.split('q=')[1] : codeOrUrl;
-
-  navigateTo({
-    query: { q },
-  });
-});
+useQrReaderDetector();
 </script>
 
 <template>

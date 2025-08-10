@@ -1,34 +1,37 @@
-export function useQrReaderDetector(onScan: (code: string) => void) {
-  const scannedCode = ref('');
-  let buffer = '';
-  let lastTime = 0;
-
-  function onKeydown(e: KeyboardEvent) {
-    const currentTime = Date.now();
-
-    if (currentTime - lastTime > 100) {
-      buffer = '';
-    }
-
-    lastTime = currentTime;
-
-    if (e.key === 'Enter') {
-      scannedCode.value = buffer;
-      onScan(buffer);
-      buffer = '';
-      return;
-    }
-
-    if (e.key.length === 1) {
-      buffer += e.key;
-    }
-  }
+export function useQrReaderDetector() {
+  const router = useRouter();
+  const abortController = new AbortController();
 
   onMounted(() => {
-    window.addEventListener('keydown', onKeydown);
+    let buffer = '';
+    let lastTime = 0;
+
+    window.addEventListener('keydown', (ev) => {
+      const currentTime = Date.now();
+
+      if (currentTime - lastTime > 100) {
+        buffer = '';
+      }
+
+      lastTime = currentTime;
+
+      if (ev.key === 'Enter') {
+        const q = buffer.includes('q=') ? buffer.split('q=')[1] : buffer;
+
+        router.push({
+          query: { q },
+        });
+        buffer = '';
+        return;
+      }
+
+      if (ev.key.length === 1) {
+        buffer += ev.key;
+      }
+    }, { signal: abortController.signal });
   });
 
   onBeforeUnmount(() => {
-    window.removeEventListener('keydown', onKeydown);
+    abortController.abort();
   });
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import JSBarcode from 'jsbarcode';
+import QRCode from 'qrcode';
 
 const props = defineProps<{
   value: string;
@@ -9,17 +9,17 @@ const barcodeDisplay = useTemplateRef('barcode-display');
 
 onMounted(() => {
   watchEffect(() => {
-    JSBarcode(barcodeDisplay.value, props.value);
+    QRCode.toCanvas(barcodeDisplay.value, props.value);
   });
 });
 </script>
 
 <template>
   <UiCard>
-    <svg
+    <canvas
       ref="barcode-display"
       class="mx-auto"
-    >{{ '' }}</svg>
+    />
   </UiCard>
 </template>
 

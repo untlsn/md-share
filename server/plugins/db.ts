@@ -5,8 +5,8 @@ export default defineNitroPlugin((nitroApp) => {
 
   const db = drizzle({
     connection: {
-      url: config.turso.databaseUrl,
-      authToken: config.turso.authToken,
+      url: config.db.url,
+      authToken: config.db.token,
     },
   });
 

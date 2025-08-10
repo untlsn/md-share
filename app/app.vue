@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useLocalStorage } from '@vueuse/core';
 
 const orpc = useOrpc();
 
@@ -22,6 +23,12 @@ const barcode = computed(() => {
 
   return id.toString(36);
 });
+
+const fullURL = computed(() => {
+  return `${location.host}?q=${barcode.value}`;
+});
+
+const tab = useLocalStorage('tab', 'barcode-id');
 </script>
 
 <template>
@@ -33,11 +40,31 @@ const barcode = computed(() => {
       :model-value="textData?.text"
       @submit="mutate"
     />
-    <UiCard
+    <UiTabs
       v-if="barcode"
+      v-model="tab"
       class="m-4"
     >
-      <BarcodeDisplay :value="barcode" />
-    </UiCard>
+      <UiTabsList>
+        <UiTabsTrigger value="barcode-id">
+          Barcode ID
+        </UiTabsTrigger>
+        <UiTabsTrigger value="barcode-url">
+          Barcode URL
+        </UiTabsTrigger>
+        <UiTabsTrigger value="qr-url">
+          QR URL
+        </UiTabsTrigger>
+      </UiTabsList>
+      <UiTabsContent value="barcode-id">
+        <LazyBarcodeDisplay :value="barcode" />
+      </UiTabsContent>
+      <UiTabsContent value="barcode-url">
+        <LazyBarcodeDisplay :value="fullURL" />
+      </UiTabsContent>
+      <UiTabsContent value="qr-url">
+        <LazyQrDisplay :value="fullURL" />
+      </UiTabsContent>
+    </UiTabs>
   </div>
 </template>

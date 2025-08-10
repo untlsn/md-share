@@ -8,7 +8,17 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     'shadcn-nuxt',
+    '@nuxtjs/color-mode',
   ],
+  ssr: false,
+  imports: {
+    presets: [
+      {
+        from: '@tanstack/vue-query',
+        imports: ['useQuery', 'useMutation', 'useInfiniteQuery'],
+      },
+    ],
+  },
   devtools: { enabled: true },
   app: {
     head: {
@@ -16,11 +26,14 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/main.css'],
+  colorMode: { classSuffix: '' },
   runtimeConfig: {
-    turso: {
-      databaseUrl: '',
-      authToken: '',
+    db: {
+      url: 'file:local.db', // NUXT_DB_URL
+      token: '', // NUXT_DB_TOKEN
+      dialect: 'sqlite', // NUXT_DB_DIALECT
     },
+    passkey: '',
   },
   compatibilityDate: '2025-07-15',
   nitro: {
@@ -37,9 +50,11 @@ export default defineNuxtConfig({
     config: {
       stylistic: {
         semi: true,
-
       },
     },
+  },
+  icon: {
+    componentName: 'NuxtIcon',
   },
   shadcn: {
     prefix: 'ui',
